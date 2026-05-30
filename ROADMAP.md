@@ -54,14 +54,16 @@ de usuários/jogadas via backend FastAPI.
 - `ROADMAP.md`, `README.md`, `.editorconfig`.
 - **Testes:** `pytest` (backend) verde; `OperationBandTests` (EditMode) prontos.
 
-### Sprint 1 — Veículo & Cabine (1ª pessoa) → critérios 1, 5
-- `TruckController` com física (`WheelCollider`), câmbio, ré, freio de mão.
-- Câmera de cabine (Cinemachine) em 1ª pessoa + look around.
-- Controles interativos: ignição, acelerador/freio, marcha, **báscula (dump bed)**,
-  buzina, faróis/luzes, freio de estacionamento.
-- HUD: velocímetro, marcha, RPM, carga, indicadores.
-- Prefab do caminhão procedural com slots para modelo futuro.
-- **Testes:** lógica de câmbio/estado de controles em EditMode.
+### Sprint 1 — Veículo & Cabine (1ª pessoa) ✅ → critérios 1, 5
+- `TruckController` com física (`WheelCollider`), câmbio automático (P/R/N/D), ré,
+  freio de serviço e freio de mão.
+- `CabinCamera` em 1ª pessoa (look around com o mouse, ancorada na cabine).
+- Controles interativos: ignição, acelerador/freio, marcha, **báscula (`DumpBed`)**,
+  **buzina** (áudio procedural), **faróis** (`TruckLights`), freio de estacionamento.
+- HUD (IMGUI) com velocímetro, marcha, RPM, temperatura, carga e ajuda de controles.
+- `ProceduralTruckBuilder` + `TruckSimBootstrap`: monta caminhão/cena de primitivas,
+  com geometria sob `Body_ProceduralSlot` (slot p/ troca de modelo na S8).
+- **Testes:** `Gearbox`, `EngineModel`, `DumpBedMotor` (EditMode) — lógica pura.
 
 ### Sprint 2 — Mundo & Ciclo de Loading → critérios 2, 4
 - Cena de mina (terreno procedural), área de **loading** com escavadeira.
@@ -117,7 +119,7 @@ de usuários/jogadas via backend FastAPI.
 ## Estado atual
 
 - [x] Sprint 0 — Fundação
-- [ ] Sprint 1 — Veículo & Cabine
+- [x] Sprint 1 — Veículo & Cabine
 - [ ] Sprint 2 — Mundo & Loading
 - [ ] Sprint 3 — Rota & Trilho
 - [ ] Sprint 4 — Performance & Pontuação
