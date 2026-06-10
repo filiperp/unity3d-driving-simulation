@@ -74,11 +74,13 @@ de usuários/jogadas via backend FastAPI.
   demarcado, com HUD de ciclo (`CycleHud`).
 - **Testes:** `OperationCycle` (idle→loading→loaded→unloading→done) e `ParkingCheck`.
 
-### Sprint 3 — Rota, Trilho & Penalização → critério 3
-- Trilho via **spline**/waypoints entre loading e unload; **mapa aberto**.
-- Detecção de saída do trilho (distância lateral) + **penalização** acumulada.
-- Minimapa/seta de orientação.
-- **Testes:** cálculo de desvio lateral e regra de penalização (lógica pura).
+### Sprint 3 — Rota, Trilho & Penalização ✅ → critério 3
+- Trilho via waypoints entre loading e unload (`TrackPath`/`RouteTrack`), desenhado
+  com `LineRenderer` no **mapa aberto**.
+- Detecção de saída do trilho por desvio lateral (`RouteTrack.Sample`) + **penalização**
+  acumulada proporcional ao excesso e ao tempo (`OffTrackMonitor`/`RouteGuide`).
+- Progresso ao longo da rota e alerta de "fora do trilho" no HUD.
+- **Testes:** `RouteTrack` (projeção/desvio/progresso) e `OffTrackMonitor` (penalização).
 
 ### Sprint 4 — Performance & Pontuação → critério 6
 - "Faixa de operação perfeita": RPM/velocidade/temperatura/carga ideais.
@@ -123,7 +125,7 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 0 — Fundação
 - [x] Sprint 1 — Veículo & Cabine
 - [x] Sprint 2 — Mundo & Loading
-- [ ] Sprint 3 — Rota & Trilho
+- [x] Sprint 3 — Rota & Trilho
 - [ ] Sprint 4 — Performance & Pontuação
 - [ ] Sprint 5 — Alertas & Procedimentos
 - [ ] Sprint 6 — Configuração & 2 Minas

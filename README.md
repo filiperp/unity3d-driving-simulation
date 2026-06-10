@@ -4,7 +4,7 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 2 (Mundo & Ciclo de Loading)** concluída. Veja [`ROADMAP.md`](ROADMAP.md)
+> Status: **Sprint 3 (Rota, Trilho & Penalização)** concluída. Veja [`ROADMAP.md`](ROADMAP.md)
 > para o plano completo em sprints e o mapeamento dos critérios de aceitação.
 
 ## Estrutura
@@ -76,6 +76,13 @@ Os testes EditMode da lógica de veículo ficam em **Window → General → Test
      para erguer a báscula → a carga é **descarregada** e o ciclo conclui.
 
 > A escavadeira também usa `Body_ProceduralSlot` (troca de modelo na S8).
+
+A cena da Sprint 2 (`MineWorldBootstrap`) já inclui o **trilho esperado** (linha amarela)
+entre loading e unload, adicionado na Sprint 3:
+
+- siga a linha amarela; o HUD mostra o **progresso** ao longo da rota;
+- se afastar além da tolerância lateral (mina fácil ~4 m, difícil ~2 m), o HUD acusa
+  **⚠ FORA DO TRILHO** e a **penalidade** acumula proporcionalmente ao desvio e ao tempo.
 
 ## Backend (FastAPI)
 

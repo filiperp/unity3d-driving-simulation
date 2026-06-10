@@ -1,5 +1,6 @@
 using MiningTruckSim.Common;
 using MiningTruckSim.Operation;
+using MiningTruckSim.Track;
 using MiningTruckSim.UI;
 using MiningTruckSim.Vehicle;
 using MiningTruckSim.View;
@@ -17,6 +18,9 @@ namespace MiningTruckSim.Bootstrap
         public Vector3 truckSpawn = new Vector3(0f, 1.2f, 0f);
         public Vector3 loadPoint = new Vector3(0f, 0f, 40f);
         public Vector3 unloadPoint = new Vector3(40f, 0f, -30f);
+
+        [Tooltip("Tolerância lateral do trilho (m). Mina fácil ~4, difícil ~2 (critério 8).")]
+        public float offTrackToleranceM = 4f;
 
         private void Start()
         {
@@ -40,6 +44,13 @@ namespace MiningTruckSim.Bootstrap
             OperationZone unloadZone = CreateZone("UnloadZone", ZoneKind.Unload, unloadPoint,
                 Vector3.left, new Color(1f, 0.6f, 0.1f, 0.25f));
 
+            // ---- Trilho esperado loading → unload (critério 3) ------------------
+            TrackPath path = CreateTrack(loadPoint, unloadPoint);
+            var guide = truckGo.AddComponent<RouteGuide>();
+            guide.truck = truck;
+            guide.path = path;
+            guide.offTrackToleranceM = offTrackToleranceM;
+
             // ---- Director --------------------------------------------------------
             var director = truckGo.AddComponent<CycleDirector>();
             director.truck = truck;
@@ -49,9 +60,29 @@ namespace MiningTruckSim.Bootstrap
             director.excavator = excavator;
             director.fullLoadTonnes = truck.capacityTonnes;
 
-            // HUD do ciclo (mostra fase/carga).
+            // HUD do ciclo (mostra fase/carga + estado do trilho).
             var hud = truckGo.AddComponent<CycleHud>();
             hud.director = director;
+            hud.guide = guide;
+        }
+
+        private static TrackPath CreateTrack(Vector3 loadPoint, Vector3 unloadPoint)
+        {
+            var root = new GameObject("ExpectedTrack");
+            var path = root.AddComponent<TrackPath>();
+
+            // Trilho com uma curva intermediária entre loading e unload.
+            Vector3 mid = Vector3.Lerp(loadPoint, unloadPoint, 0.5f) + new Vector3(-12f, 0f, 6f);
+            Vector3[] pts = { loadPoint, mid, unloadPoint };
+            foreach (Vector3 p in pts)
+            {
+                var wp = new GameObject("WP");
+                wp.transform.SetParent(root.transform, false);
+                wp.transform.position = new Vector3(p.x, 0f, p.z);
+                path.waypoints.Add(wp.transform);
+            }
+
+            return path;
         }
 
         private static Camera EnsureCamera()
