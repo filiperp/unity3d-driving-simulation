@@ -1,3 +1,4 @@
+using MiningTruckSim.Alerts;
 using MiningTruckSim.Common;
 using MiningTruckSim.Operation;
 using MiningTruckSim.Scoring;
@@ -22,6 +23,9 @@ namespace MiningTruckSim.Bootstrap
 
         [Tooltip("Tolerância lateral do trilho (m). Mina fácil ~4, difícil ~2 (critério 8).")]
         public float offTrackToleranceM = 4f;
+
+        [Tooltip("Frequência média de alertas por minuto (vem da mina escolhida, critério 8).")]
+        public float alertsPerMinute = 0.3f;
 
         private void Start()
         {
@@ -77,6 +81,16 @@ namespace MiningTruckSim.Bootstrap
             presenter.director = director;
             presenter.scorer = scorer;
             presenter.resultScreen = resultScreen;
+
+            // ---- Alertas aleatórios + procedimentos de conserto (critério 9) ----
+            var alertSystem = truckGo.AddComponent<AlertSystem>();
+            alertSystem.truck = truck;
+            alertSystem.routeGuide = guide;
+            alertSystem.scorer = scorer;
+            alertSystem.alertsPerMinute = alertsPerMinute;
+
+            var alertHud = truckGo.AddComponent<AlertHud>();
+            alertHud.alertSystem = alertSystem;
         }
 
         private static TrackPath CreateTrack(Vector3 loadPoint, Vector3 unloadPoint)

@@ -4,8 +4,8 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 4 (Performance & Pontuação)** concluída. Veja [`ROADMAP.md`](ROADMAP.md)
-> para o plano completo em sprints e o mapeamento dos critérios de aceitação.
+> Status: **Sprint 5 (Alertas & Procedimentos de conserto)** concluída. Veja
+> [`ROADMAP.md`](ROADMAP.md) para o plano completo em sprints e o mapeamento dos critérios.
 
 ## Estrutura
 
@@ -87,6 +87,19 @@ entre loading e unload, adicionado na Sprint 3:
 Ao **concluir o ciclo** (descarga completa), a Sprint 4 mostra a **tela de resultado**
 com a pontuação de performance: pontos por tempo na **faixa de operação perfeita**
 (RPM/velocidade/temperatura/carga ideais) menos as penalidades, com **rating S/A/B/C/D**.
+
+Durante a operação, a Sprint 5 dispara **alertas aleatórios** com **procedimentos de
+conserto distintos** (canto esquerdo, com barra de progresso do reparo):
+
+| Alerta | Como consertar |
+|--------|----------------|
+| Pressão de óleo alta | Reduza o RPM (solte o acelerador) e mantenha até normalizar |
+| Filtro de ar entupido | Pare o caminhão e segure **`R`** para trocar o filtro |
+| Fora do trilho | Retorne ao trilho esperado |
+| Excesso de carga | Alivie a carga (descarregue) até a faixa nominal |
+
+Cada alerta não resolvido **penaliza a pontuação** por segundo. A frequência de alertas
+depende da mina escolhida (critério 8).
 
 ## Backend (FastAPI)
 
