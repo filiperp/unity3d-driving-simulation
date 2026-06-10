@@ -1,6 +1,7 @@
 using MiningTruckSim.Alerts;
 using MiningTruckSim.Common;
 using MiningTruckSim.Config;
+using MiningTruckSim.Net;
 using MiningTruckSim.Operation;
 using MiningTruckSim.Scoring;
 using MiningTruckSim.Track;
@@ -31,6 +32,13 @@ namespace MiningTruckSim.Bootstrap
         [Tooltip("Se true, usa a mina/ciclos escolhidos no menu (OperationContext). " +
                  "Se false, usa os valores deste inspector.")]
         public bool useOperationContext = true;
+
+        [Header("Backend (critério 7)")]
+        [Tooltip("Liga a persistência de usuários/jogadas no backend FastAPI.")]
+        public bool enableBackend = true;
+
+        [Tooltip("URL base da API FastAPI.")]
+        public string apiBaseUrl = "http://127.0.0.1:8000";
 
         private void Start()
         {
@@ -113,6 +121,20 @@ namespace MiningTruckSim.Bootstrap
             runner.scorer = scorer;
             runner.truck = truck;
             runner.summaryScreen = summaryScreen;
+
+            // ---- Persistência: usuários e jogadas no backend (critério 7) -------
+            if (enableBackend)
+            {
+                var api = truckGo.AddComponent<MiningApiClient>();
+                api.baseUrl = apiBaseUrl;
+
+                var reporter = truckGo.AddComponent<OperationReporter>();
+                reporter.api = api;
+                reporter.runner = runner;
+
+                var leaderboard = truckGo.AddComponent<LeaderboardScreen>();
+                leaderboard.api = api;
+            }
         }
 
         private static TrackPath CreateTrack(Vector3 loadPoint, Vector3 unloadPoint)

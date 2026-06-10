@@ -101,6 +101,7 @@ namespace MiningTruckSim.Scoring
                 BaseScore = Accumulator.Score + TotalPenalties,
                 Penalties = TotalPenalties,
                 BandRatio = Accumulator.BandRatio,
+                TimeInBandSeconds = Accumulator.TimeInBandSeconds,
                 OffTrackEvents = offTrackEvents,
                 AlertsHandled = AlertsHandled,
                 LoadTonnes = loadTonnes

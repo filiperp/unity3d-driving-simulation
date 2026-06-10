@@ -4,8 +4,10 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 6 (Configuração de Operação & 2 Minas)** concluída. Veja
-> [`ROADMAP.md`](ROADMAP.md) para o plano completo em sprints e o mapeamento dos critérios.
+> Status: **Sprint 7 (Usuários & Persistência — integração Unity↔API)** concluída — os
+> **9 critérios de aceitação** estão cobertos. Veja [`ROADMAP.md`](ROADMAP.md) para o
+> plano completo em sprints e o mapeamento dos critérios. Faltam apenas as sprints de
+> troca de assets (S8) e polimento/build (S9).
 
 ## Estrutura
 
@@ -114,6 +116,22 @@ depende da mina escolhida (critério 8).
 
 > Para testar rápido sem montar o menu, deixe `useOperationContext = false` no
 > `MineWorldBootstrap` (usa mina fácil + 3 ciclos).
+
+### Usuários, persistência e leaderboard (Sprint 7 — critério 7)
+
+Com o backend rodando (`uvicorn app.main:app`), a cena integra-se à API:
+
+1. Suba a API (`cd backend && uvicorn app.main:app`).
+2. No `MineWorldBootstrap`, mantenha `enableBackend = true` e ajuste `apiBaseUrl` se
+   necessário (padrão `http://127.0.0.1:8000`).
+3. Use **`UserLoginMenu`** para criar/selecionar um usuário (gravado em `OperationContext`).
+4. Jogue a operação: o **`OperationReporter`** cria a sessão, **envia o resultado de cada
+   ciclo** e finaliza a operação (o backend agrega o score total).
+5. **`LeaderboardScreen`** mostra o ranking por pontuação total.
+
+> Tudo é tolerante a API offline: sem usuário/servidor, o jogo roda localmente como
+> *Convidado* e nada é persistido. O cliente usa `UnityWebRequest` (coroutines, sem
+> bloquear o jogo) e o backend já tem **CORS** liberado para o player Unity.
 
 ## Backend (FastAPI)
 

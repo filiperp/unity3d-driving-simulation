@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
@@ -35,6 +36,14 @@ app = FastAPI(
     version="0.1.0",
     description="Backend de usuários, operações e pontuação do simulador.",
     lifespan=lifespan,
+)
+
+# CORS liberado para o cliente Unity (Editor/Player/WebGL) acessar a API (critério 7).
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
