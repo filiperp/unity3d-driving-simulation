@@ -90,12 +90,16 @@ de usuários/jogadas via backend FastAPI.
 - `CycleResultScreen` + `CycleResultPresenter`: tela de resultado ao concluir o ciclo.
 - **Testes:** `CycleScore` (final/rating) somando aos de `OperationBand`/`ScoreAccumulator`.
 
-### Sprint 5 — Alertas & Procedimentos → critério 9
-- Motor de eventos aleatórios: **pressão de óleo alta, filtro entupido, saída do
-  trilho, excesso de carga** (extensível).
-- Cada alerta com **procedimento de conserto distinto** (mini-interação/checklist).
-- Impacto na performance enquanto não resolvido.
-- **Testes:** agendador de alertas (determinístico via seed) + resolução.
+### Sprint 5 — Alertas & Procedimentos ✅ → critério 9
+- `AlertScheduler`: motor de eventos aleatórios (Poisson, determinístico por seed),
+  frequência vinda da mina (critério 8); tipos: **pressão de óleo alta, filtro
+  entupido, saída do trilho, excesso de carga** (extensível via `AlertCatalog`).
+- Cada alerta com **procedimento de conserto distinto** (`RepairProcedure`): condição
+  sustentada (reduzir RPM / voltar ao trilho / aliviar carga) ou ação manual (segurar
+  [R] parado p/ trocar filtro), com barra de progresso no HUD.
+- **Penalidade por segundo** enquanto não resolvido, descontada do scoring (S4).
+- **Testes:** `AlertScheduler` (determinismo/seed, taxa, sem duplicar tipo),
+  `ActiveAlert` (resolução/penalidade) e `AlertCatalog` (procedimentos distintos).
 
 ### Sprint 6 — Configuração de Operação & 2 Minas → critério 8
 - Menu: escolher **mina fácil/difícil** e **N ciclos** (configurável).
@@ -129,7 +133,7 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 2 — Mundo & Loading
 - [x] Sprint 3 — Rota & Trilho
 - [x] Sprint 4 — Performance & Pontuação
-- [ ] Sprint 5 — Alertas & Procedimentos
+- [x] Sprint 5 — Alertas & Procedimentos
 - [ ] Sprint 6 — Configuração & 2 Minas
 - [ ] Sprint 7 — Usuários & Persistência (integração)
 - [ ] Sprint 8 — Troca de Assets
