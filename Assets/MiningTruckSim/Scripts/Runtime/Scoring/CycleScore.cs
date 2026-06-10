@@ -22,6 +22,9 @@ namespace MiningTruckSim.Scoring
         /// <summary>Fração do ciclo mantida na faixa perfeita, em [0,1].</summary>
         public float BandRatio;
 
+        /// <summary>Tempo (s) mantido na faixa perfeita durante o ciclo.</summary>
+        public float TimeInBandSeconds;
+
         public int OffTrackEvents;
         public int AlertsHandled;
         public float LoadTonnes;

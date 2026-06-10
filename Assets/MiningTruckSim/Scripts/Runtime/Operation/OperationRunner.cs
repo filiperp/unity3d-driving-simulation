@@ -22,6 +22,12 @@ namespace MiningTruckSim.Operation
 
         public OperationProgress Progress { get; private set; }
 
+        /// <summary>Disparado quando um ciclo é concluído (com seu resultado).</summary>
+        public event System.Action<CycleScore> CycleCompleted;
+
+        /// <summary>Disparado quando todos os N ciclos terminam (operação completa).</summary>
+        public event System.Action<OperationProgress> OperationCompleted;
+
         private Vector3 _spawnPos;
         private Quaternion _spawnRot;
         private bool _hasSpawnPose;
@@ -65,6 +71,7 @@ namespace MiningTruckSim.Operation
                 : new CycleScore { CycleIndex = index };
 
             Progress.CompleteCycle(result);
+            CycleCompleted?.Invoke(result);
 
             if (Progress.IsComplete)
             {
@@ -72,6 +79,8 @@ namespace MiningTruckSim.Operation
                 {
                     summaryScreen.Show(Progress);
                 }
+
+                OperationCompleted?.Invoke(Progress);
             }
             else
             {

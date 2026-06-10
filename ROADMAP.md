@@ -111,11 +111,14 @@ de usuários/jogadas via backend FastAPI.
 - **Testes:** `MineCatalog`, `OperationConfig` (validação de N) e `OperationProgress`
   (progressão e agregação dos N ciclos).
 
-### Sprint 7 — Usuários & Persistência (integração Unity ↔ API) → critério 7
-- Cliente Unity para a API (`UnityWebRequest`): login/seleção de usuário,
-  criar operação, enviar resultado de cada ciclo, finalizar sessão.
-- Histórico de jogadas e leaderboard na UI.
-- **Testes:** integração contra a API (já coberta por pytest no backend).
+### Sprint 7 — Usuários & Persistência (integração Unity ↔ API) ✅ → critério 7
+- Cliente Unity (`MiningApiClient` via `UnityWebRequest`): criar/listar usuários,
+  criar operação, enviar resultado de cada ciclo e finalizar a sessão.
+- `OperationReporter` liga o loop de ciclos ao backend (cria sessão → posta ciclos →
+  finaliza), tolerante a API offline.
+- UI: `UserLoginMenu` (login/seleção de usuário) e `LeaderboardScreen` (ranking).
+- Backend: CORS liberado para o cliente Unity; `MineWorldBootstrap` integra tudo.
+- **Testes:** pytest do backend ampliado (CORS + finish com corpo JSON) — 7 verdes.
 
 ### Sprint 8 — Troca de Assets (modelos comprados)
 - Substituir primitivas pelos modelos reais (caminhão, escavadeira, cenário)
@@ -138,6 +141,6 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 4 — Performance & Pontuação
 - [x] Sprint 5 — Alertas & Procedimentos
 - [x] Sprint 6 — Configuração & 2 Minas
-- [ ] Sprint 7 — Usuários & Persistência (integração)
+- [x] Sprint 7 — Usuários & Persistência (integração)
 - [ ] Sprint 8 — Troca de Assets
 - [ ] Sprint 9 — Polimento & QA

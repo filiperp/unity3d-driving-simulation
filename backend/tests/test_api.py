@@ -7,6 +7,26 @@ def test_health(client):
     assert r.json()["status"] == "ok"
 
 
+def test_cors_header_present_for_unity_client(client):
+    # O cliente Unity depende de CORS liberado (critério 7).
+    r = client.get("/health", headers={"Origin": "http://localhost"})
+    assert r.headers.get("access-control-allow-origin") == "*"
+
+
+def test_finish_tolerates_json_body(client):
+    # O cliente Unity envia "{}" no POST /finish; o backend deve aceitar.
+    user = client.post("/users", json={"username": "z"}).json()
+    session = client.post(
+        "/sessions", json={"user_id": user["id"], "mine": "easy", "cycles_planned": 1}
+    ).json()
+    client.post(
+        f"/sessions/{session['id']}/cycles", json={"cycle_index": 0, "score": 42}
+    )
+    r = client.post(f"/sessions/{session['id']}/finish", json={})
+    assert r.status_code == 200
+    assert r.json()["total_score"] == 42
+
+
 def test_mines_lists_two(client):
     r = client.get("/mines")
     assert r.status_code == 200
