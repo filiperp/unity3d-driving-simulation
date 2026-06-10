@@ -82,11 +82,13 @@ de usuários/jogadas via backend FastAPI.
 - Progresso ao longo da rota e alerta de "fora do trilho" no HUD.
 - **Testes:** `RouteTrack` (projeção/desvio/progresso) e `OffTrackMonitor` (penalização).
 
-### Sprint 4 — Performance & Pontuação → critério 6
-- "Faixa de operação perfeita": RPM/velocidade/temperatura/carga ideais.
-- Acúmulo de score por tempo dentro da faixa; combinação com penalidades.
-- Tela de resultado de ciclo/operação.
-- **Testes:** `OperationBand` + `ScoreCalculator` (lógica pura).
+### Sprint 4 — Performance & Pontuação ✅ → critério 6
+- `PerformanceScorer`: pontua o tempo na "faixa de operação perfeita"
+  (`OperationBand` + `ScoreAccumulator`) e absorve as penalidades do trilho (S3) e
+  de alertas (S5).
+- `CycleScore`: resultado consolidado (final = base − penalidades) com **rating S/A/B/C/D**.
+- `CycleResultScreen` + `CycleResultPresenter`: tela de resultado ao concluir o ciclo.
+- **Testes:** `CycleScore` (final/rating) somando aos de `OperationBand`/`ScoreAccumulator`.
 
 ### Sprint 5 — Alertas & Procedimentos → critério 9
 - Motor de eventos aleatórios: **pressão de óleo alta, filtro entupido, saída do
@@ -126,7 +128,7 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 1 — Veículo & Cabine
 - [x] Sprint 2 — Mundo & Loading
 - [x] Sprint 3 — Rota & Trilho
-- [ ] Sprint 4 — Performance & Pontuação
+- [x] Sprint 4 — Performance & Pontuação
 - [ ] Sprint 5 — Alertas & Procedimentos
 - [ ] Sprint 6 — Configuração & 2 Minas
 - [ ] Sprint 7 — Usuários & Persistência (integração)

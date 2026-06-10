@@ -1,5 +1,6 @@
 using MiningTruckSim.Common;
 using MiningTruckSim.Operation;
+using MiningTruckSim.Scoring;
 using MiningTruckSim.Track;
 using MiningTruckSim.UI;
 using MiningTruckSim.Vehicle;
@@ -64,6 +65,18 @@ namespace MiningTruckSim.Bootstrap
             var hud = truckGo.AddComponent<CycleHud>();
             hud.director = director;
             hud.guide = guide;
+
+            // ---- Pontuação de performance + tela de resultado (critério 6) ------
+            var scorer = truckGo.AddComponent<PerformanceScorer>();
+            scorer.truck = truck;
+            scorer.routeGuide = guide;
+
+            var resultScreen = truckGo.AddComponent<CycleResultScreen>();
+
+            var presenter = truckGo.AddComponent<CycleResultPresenter>();
+            presenter.director = director;
+            presenter.scorer = scorer;
+            presenter.resultScreen = resultScreen;
         }
 
         private static TrackPath CreateTrack(Vector3 loadPoint, Vector3 unloadPoint)

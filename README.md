@@ -4,7 +4,7 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 3 (Rota, Trilho & Penalização)** concluída. Veja [`ROADMAP.md`](ROADMAP.md)
+> Status: **Sprint 4 (Performance & Pontuação)** concluída. Veja [`ROADMAP.md`](ROADMAP.md)
 > para o plano completo em sprints e o mapeamento dos critérios de aceitação.
 
 ## Estrutura
@@ -83,6 +83,10 @@ entre loading e unload, adicionado na Sprint 3:
 - siga a linha amarela; o HUD mostra o **progresso** ao longo da rota;
 - se afastar além da tolerância lateral (mina fácil ~4 m, difícil ~2 m), o HUD acusa
   **⚠ FORA DO TRILHO** e a **penalidade** acumula proporcionalmente ao desvio e ao tempo.
+
+Ao **concluir o ciclo** (descarga completa), a Sprint 4 mostra a **tela de resultado**
+com a pontuação de performance: pontos por tempo na **faixa de operação perfeita**
+(RPM/velocidade/temperatura/carga ideais) menos as penalidades, com **rating S/A/B/C/D**.
 
 ## Backend (FastAPI)
 
