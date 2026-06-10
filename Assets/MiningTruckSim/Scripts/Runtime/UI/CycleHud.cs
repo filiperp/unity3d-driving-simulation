@@ -1,4 +1,5 @@
 using MiningTruckSim.Operation;
+using MiningTruckSim.Track;
 using UnityEngine;
 
 namespace MiningTruckSim.UI
@@ -11,6 +12,7 @@ namespace MiningTruckSim.UI
     public sealed class CycleHud : MonoBehaviour
     {
         public CycleDirector director;
+        public RouteGuide guide;
 
         private GUIStyle _panel;
 
@@ -31,11 +33,20 @@ namespace MiningTruckSim.UI
             OperationCycle c = director.Cycle;
             string text =
                 $"Fase: {PhaseLabel(c.Phase)}\n" +
-                $"Caçamba: {c.LoadFill * 100f:0}%\n\n" +
-                Hint(c.Phase);
+                $"Caçamba: {c.LoadFill * 100f:0}%\n";
 
-            float w = 320f;
-            GUI.Box(new Rect(Screen.width - w - 12, 12, w, 120), text, _panel);
+            if (guide != null)
+            {
+                text += $"Trilho: {guide.Progress * 100f:0}%" +
+                        (guide.IsOffTrack ? "  ⚠ FORA DO TRILHO" : "") + "\n" +
+                        $"Penalidade: {guide.TotalPenalty:0}\n";
+            }
+
+            text += "\n" + Hint(c.Phase);
+
+            float w = 340f;
+            float h = guide != null ? 160f : 120f;
+            GUI.Box(new Rect(Screen.width - w - 12, 12, w, h), text, _panel);
         }
 
         private static string PhaseLabel(CyclePhase phase) => phase switch
