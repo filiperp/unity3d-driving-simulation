@@ -65,12 +65,14 @@ de usuários/jogadas via backend FastAPI.
   com geometria sob `Body_ProceduralSlot` (slot p/ troca de modelo na S8).
 - **Testes:** `Gearbox`, `EngineModel`, `DumpBedMotor` (EditMode) — lógica pura.
 
-### Sprint 2 — Mundo & Ciclo de Loading → critérios 2, 4
-- Cena de mina (terreno procedural), área de **loading** com escavadeira.
-- Escavadeira com **animação de carregamento** (procedural/Timeline).
-- Ponto de carregamento: trigger + verificação de alinhamento/estacionamento.
-- Enchimento progressivo da caçamba; **unload** no ponto demarcado via báscula.
-- **Testes:** máquina de estados do ciclo (idle→loading→loaded→unloading→done).
+### Sprint 2 — Mundo & Ciclo de Loading ✅ → critérios 2, 4
+- Cena de mina procedural (`MineWorldBootstrap`): chão, áreas de **loading** e **unload**.
+- `Excavator` procedural com **animação de carregamento** (giro + concha).
+- `OperationZone` (gatilho da área + ponto de parada) e `ParkingCheck`
+  (alinhamento/estacionamento).
+- Enchimento progressivo da caçamba (toneladas) e **unload** via báscula no ponto
+  demarcado, com HUD de ciclo (`CycleHud`).
+- **Testes:** `OperationCycle` (idle→loading→loaded→unloading→done) e `ParkingCheck`.
 
 ### Sprint 3 — Rota, Trilho & Penalização → critério 3
 - Trilho via **spline**/waypoints entre loading e unload; **mapa aberto**.
@@ -120,7 +122,7 @@ de usuários/jogadas via backend FastAPI.
 
 - [x] Sprint 0 — Fundação
 - [x] Sprint 1 — Veículo & Cabine
-- [ ] Sprint 2 — Mundo & Loading
+- [x] Sprint 2 — Mundo & Loading
 - [ ] Sprint 3 — Rota & Trilho
 - [ ] Sprint 4 — Performance & Pontuação
 - [ ] Sprint 5 — Alertas & Procedimentos
