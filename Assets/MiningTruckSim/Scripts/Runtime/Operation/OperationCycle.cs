@@ -31,6 +31,13 @@ namespace MiningTruckSim.Operation
         public bool IsUnloading => Phase == CyclePhase.Unloading;
         public bool IsComplete => Phase == CyclePhase.Done;
 
+        /// <summary>Reinicia o ciclo para o começo (usado pelo loop de N ciclos, critério 8).</summary>
+        public void Reset()
+        {
+            LoadFill = 0f;
+            SetPhase(CyclePhase.Idle);
+        }
+
         /// <summary>O caminhão entrou na área de loading.</summary>
         public void EnterLoadZone()
         {

@@ -1,5 +1,6 @@
 using MiningTruckSim.Alerts;
 using MiningTruckSim.Common;
+using MiningTruckSim.Config;
 using MiningTruckSim.Operation;
 using MiningTruckSim.Scoring;
 using MiningTruckSim.Track;
@@ -27,8 +28,20 @@ namespace MiningTruckSim.Bootstrap
         [Tooltip("Frequência média de alertas por minuto (vem da mina escolhida, critério 8).")]
         public float alertsPerMinute = 0.3f;
 
+        [Tooltip("Se true, usa a mina/ciclos escolhidos no menu (OperationContext). " +
+                 "Se false, usa os valores deste inspector.")]
+        public bool useOperationContext = true;
+
         private void Start()
         {
+            // Configuração da operação (critério 8): mina fácil/difícil + N ciclos.
+            OperationConfig opConfig = useOperationContext
+                ? OperationContext.Config.Validated()
+                : new OperationConfig(MineCatalog.Easy, 3);
+            MineConfig mine = opConfig.Mine;
+            offTrackToleranceM = mine.OffTrackToleranceM;
+            alertsPerMinute = mine.AlertsPerMinute;
+
             EnsureSun();
             CreateGround();
 
@@ -91,6 +104,15 @@ namespace MiningTruckSim.Bootstrap
 
             var alertHud = truckGo.AddComponent<AlertHud>();
             alertHud.alertSystem = alertSystem;
+
+            // ---- Loop de N ciclos + resumo da operação (critério 8) -------------
+            var summaryScreen = truckGo.AddComponent<OperationSummaryScreen>();
+
+            var runner = truckGo.AddComponent<OperationRunner>();
+            runner.director = director;
+            runner.scorer = scorer;
+            runner.truck = truck;
+            runner.summaryScreen = summaryScreen;
         }
 
         private static TrackPath CreateTrack(Vector3 loadPoint, Vector3 unloadPoint)
