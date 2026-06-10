@@ -4,7 +4,7 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 5 (Alertas & Procedimentos de conserto)** concluída. Veja
+> Status: **Sprint 6 (Configuração de Operação & 2 Minas)** concluída. Veja
 > [`ROADMAP.md`](ROADMAP.md) para o plano completo em sprints e o mapeamento dos critérios.
 
 ## Estrutura
@@ -100,6 +100,20 @@ conserto distintos** (canto esquerdo, com barra de progresso do reparo):
 
 Cada alerta não resolvido **penaliza a pontuação** por segundo. A frequência de alertas
 depende da mina escolhida (critério 8).
+
+### Configurar a operação (Sprint 6 — critério 8)
+
+- O componente **`OperationSetupMenu`** (num GameObject de um menu) deixa escolher entre
+  as **2 minas** — *Vale Verde (fácil)* e *Serra Negra (difícil)* — e o **número de ciclos
+  (N)**, gravando em `OperationContext`.
+- A cena `MineWorldBootstrap` lê essa configuração (`useOperationContext = true`) e aplica
+  a dificuldade da mina (tolerância do trilho, frequência de alertas).
+- O **`OperationRunner`** roda o **loop de N ciclos**: a cada ciclo concluído reposiciona o
+  caminhão e reinicia; ao fim dos N, mostra o **resumo da operação** com a pontuação total
+  agregada e a média de tempo na faixa perfeita.
+
+> Para testar rápido sem montar o menu, deixe `useOperationContext = false` no
+> `MineWorldBootstrap` (usa mina fácil + 3 ciclos).
 
 ## Backend (FastAPI)
 

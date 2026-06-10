@@ -101,12 +101,15 @@ de usuários/jogadas via backend FastAPI.
 - **Testes:** `AlertScheduler` (determinismo/seed, taxa, sem duplicar tipo),
   `ActiveAlert` (resolução/penalidade) e `AlertCatalog` (procedimentos distintos).
 
-### Sprint 6 — Configuração de Operação & 2 Minas → critério 8
-- Menu: escolher **mina fácil/difícil** e **N ciclos** (configurável).
-- Dois layouts de mina (parâmetros: distância, curvas, inclinação, frequência de
-  alertas) já espelhados no backend (`/mines`).
-- Loop de N ciclos com agregação de pontuação.
-- **Testes:** progressão de ciclos e agregação.
+### Sprint 6 — Configuração de Operação & 2 Minas ✅ → critério 8
+- `OperationSetupMenu`: escolher **mina fácil/difícil** e **N ciclos** (configurável),
+  gravando em `OperationContext` lido pela cena.
+- `MineCatalog` (2 minas) espelha o backend (`/mines`): distância, curvas, inclinação,
+  tolerância do trilho e frequência de alertas → dificuldade aplicada na cena.
+- `OperationRunner` + `OperationProgress`: **loop de N ciclos** com reinício automático
+  do ciclo e **agregação de pontuação**; `OperationSummaryScreen` com o resumo final.
+- **Testes:** `MineCatalog`, `OperationConfig` (validação de N) e `OperationProgress`
+  (progressão e agregação dos N ciclos).
 
 ### Sprint 7 — Usuários & Persistência (integração Unity ↔ API) → critério 7
 - Cliente Unity para a API (`UnityWebRequest`): login/seleção de usuário,
@@ -134,7 +137,7 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 3 — Rota & Trilho
 - [x] Sprint 4 — Performance & Pontuação
 - [x] Sprint 5 — Alertas & Procedimentos
-- [ ] Sprint 6 — Configuração & 2 Minas
+- [x] Sprint 6 — Configuração & 2 Minas
 - [ ] Sprint 7 — Usuários & Persistência (integração)
 - [ ] Sprint 8 — Troca de Assets
 - [ ] Sprint 9 — Polimento & QA

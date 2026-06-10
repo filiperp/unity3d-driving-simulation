@@ -64,6 +64,17 @@ namespace MiningTruckSim.Scoring
             }
         }
 
+        /// <summary>Zera a contabilização para começar um novo ciclo (loop de N ciclos, S6).</summary>
+        public void ResetForNewCycle()
+        {
+            Accumulator = new ScoreAccumulator(band, pointsPerSecondInBand);
+            AlertsHandled = 0;
+            TotalPenalties = 0f;
+            // Re-baseline: RouteGuide.TotalPenalty é cumulativo entre ciclos, então
+            // partimos do total atual para só absorver o que vier deste ciclo em diante.
+            _absorbedTrackPenalty = routeGuide != null ? routeGuide.TotalPenalty : 0f;
+        }
+
         /// <summary>Registra a penalidade de um alerta resolvido (critério 9, Sprint 5).</summary>
         public void RegisterAlertPenalty(float points)
         {
