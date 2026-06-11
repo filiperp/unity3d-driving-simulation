@@ -1,3 +1,4 @@
+using MiningTruckSim.Scoring;
 using MiningTruckSim.Vehicle;
 using UnityEngine;
 
