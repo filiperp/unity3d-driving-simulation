@@ -125,10 +125,14 @@ de usuários/jogadas via backend FastAPI.
   reaproveitando os slots/prefab variants criados desde a S1.
 - Ajuste de escala, colisores, pontos de articulação (báscula), animações.
 
-### Sprint 9 — Polimento, Build & QA
-- Áudio (motor, alertas), partículas (poeira), iluminação/skybox URP.
-- Build settings, otimização, configuração de qualidade.
-- QA final contra os 9 critérios de aceitação.
+### Sprint 9 — Polimento, Build & QA ✅ (sem áudio nesta fase) → suporte aos 9 critérios
+- Partículas: **poeira procedural das rodas** (`WheelDustEffect`) modulada pela velocidade.
+- Ambiente: **céu/luz ambiente/névoa/sombras** via `EnvironmentPolish` (URP, runtime).
+- Build: `BuildScript` (menu + headless/CI) + asmdef de Editor.
+- CI: workflow de **backend (pytest)** e de **testes EditMode Unity** (GameCI, pulado
+  sem licença).
+- QA: `QA_CHECKLIST.md` mapeando os 9 critérios para validação no Editor.
+- Pendente p/ fase futura: **áudio** (motor, alertas, buzina) e skybox/lighting dedicados.
 
 ---
 
@@ -143,4 +147,4 @@ de usuários/jogadas via backend FastAPI.
 - [x] Sprint 6 — Configuração & 2 Minas
 - [x] Sprint 7 — Usuários & Persistência (integração)
 - [ ] Sprint 8 — Troca de Assets
-- [ ] Sprint 9 — Polimento & QA
+- [x] Sprint 9 — Polimento & QA (sem áudio nesta fase)
