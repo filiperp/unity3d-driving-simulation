@@ -4,10 +4,11 @@ POC de simulador de **caminhão de mineração em primeira pessoa** (visão de c
 feito em **Unity 6 + URP**, com backend **FastAPI** para usuários, configuração de
 operação e persistência de jogadas.
 
-> Status: **Sprint 7 (Usuários & Persistência — integração Unity↔API)** concluída — os
+> Status: **Sprints 0–7 + Sprint 9 (Polimento/Build/QA, sem áudio)** concluídas — os
 > **9 critérios de aceitação** estão cobertos. Veja [`ROADMAP.md`](ROADMAP.md) para o
-> plano completo em sprints e o mapeamento dos critérios. Faltam apenas as sprints de
-> troca de assets (S8) e polimento/build (S9).
+> plano e [`QA_CHECKLIST.md`](QA_CHECKLIST.md) para o roteiro de validação. Falta apenas
+> a **Sprint 8** (troca das primitivas pelos modelos comprados) e, como pendência futura,
+> o **áudio**.
 
 ## Estrutura
 

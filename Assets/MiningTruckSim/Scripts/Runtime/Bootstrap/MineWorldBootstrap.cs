@@ -1,6 +1,7 @@
 using MiningTruckSim.Alerts;
 using MiningTruckSim.Common;
 using MiningTruckSim.Config;
+using MiningTruckSim.Fx;
 using MiningTruckSim.Net;
 using MiningTruckSim.Operation;
 using MiningTruckSim.Scoring;
@@ -40,6 +41,10 @@ namespace MiningTruckSim.Bootstrap
         [Tooltip("URL base da API FastAPI.")]
         public string apiBaseUrl = "http://127.0.0.1:8000";
 
+        [Header("Polimento visual (S9)")]
+        [Tooltip("Liga céu/ambiente/névoa/sombras e a poeira das rodas.")]
+        public bool enablePolish = true;
+
         private void Start()
         {
             // Configuração da operação (critério 8): mina fácil/difícil + N ciclos.
@@ -57,6 +62,14 @@ namespace MiningTruckSim.Bootstrap
             GameObject truckGo = ProceduralTruckBuilder.Build(truckSpawn, cam);
             var truck = truckGo.GetComponent<TruckController>();
             var dumpBed = truckGo.GetComponent<DumpBed>();
+
+            // Polimento de ambiente (céu, ambiente, névoa, sombras) — S9, depois da câmera.
+            if (enablePolish)
+            {
+                Light sun = EnsureSun();
+                EnvironmentPolish.Apply(sun);
+                AttachWheelDust(truckGo, truck);
+            }
 
             // ---- Área de loading + escavadeira ----------------------------------
             OperationZone loadZone = CreateZone("LoadZone", ZoneKind.Load, loadPoint, Vector3.back,
@@ -169,13 +182,13 @@ namespace MiningTruckSim.Bootstrap
             return cam;
         }
 
-        private static void EnsureSun()
+        private static Light EnsureSun()
         {
             foreach (Light light in Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
             {
                 if (light.type == LightType.Directional)
                 {
-                    return;
+                    return light;
                 }
             }
 
@@ -185,6 +198,17 @@ namespace MiningTruckSim.Bootstrap
             sun.type = LightType.Directional;
             sun.intensity = 1.1f;
             sun.color = new Color(1f, 0.97f, 0.9f);
+            return sun;
+        }
+
+        /// <summary>Adiciona poeira procedural perto do eixo traseiro do caminhão (S9).</summary>
+        private static void AttachWheelDust(GameObject truckGo, TruckController truck)
+        {
+            var dustGo = new GameObject("WheelDust");
+            dustGo.transform.SetParent(truckGo.transform, false);
+            dustGo.transform.localPosition = new Vector3(0f, 0.1f, -2.6f); // sob o eixo traseiro
+            var dust = dustGo.AddComponent<WheelDustEffect>();
+            dust.truck = truck;
         }
 
         private static void CreateGround()
